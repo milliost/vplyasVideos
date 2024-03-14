@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Reactive Spring Video streaming</title>
+</head>
+<body>
+<div class="video" id="video">
+  <video id="myVideo" width="720" height="480" controls>
+    <source src="video/main" type="video/mp4">
+    Your browser does not support HTML5 video.
+  </video>
+  <script>
+    var vid = document.getElementById("myVideo");
+
+    function getCurTime() {
+      alert(vid.currentTime);
+    }
+
+    function setCurTime() {
+      var t = vid.currentTime
+      alert(t)
+      fetch("https://localhost:444/sas", {
+        method: "POST",
+        body: JSON.stringify({
+          d: t
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        }
+      });
+    }
+
+
+
+    window.addEventListener("beforeunload", function () {
+      setCurTime();
+    });
+
+
+  </script>
+</div>
+<button onclick="getCurTime()" type="button">Get current time position</button>
+<button onclick="setCurTime()" type="button">Set time position to 5 seconds</button><br>
+</body>
+</html>
